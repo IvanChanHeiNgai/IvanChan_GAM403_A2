@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cf1dab834d4ec34195b920ea7bbf9ec, type: 3}
   m_Name: HDRenderPipelineAsset
   m_EditorClassIdentifier: 
-  m_Version: 11
+  m_Version: 12
   m_ObsoleteFrameSettings:
     overrides: 0
     enableShadow: 0
@@ -189,10 +189,10 @@ MonoBehaviour:
     materialQuality: 0
   m_RenderPipelineSettings:
     supportShadowMask: 1
-    supportSSR: 0
+    supportSSR: 1
     supportSSAO: 1
     supportSubsurfaceScattering: 1
-    increaseSssSampleCount: 0
+    increaseSssSampleCount: 1
     supportVolumetrics: 1
     increaseResolutionOfVolumetrics: 0
     supportLightLayers: 0
@@ -209,11 +209,11 @@ MonoBehaviour:
     supportTransparentDepthPrepass: 1
     supportTransparentDepthPostpass: 1
     colorBufferFormat: 74
-    supportCustomPass: 1
+    supportCustomPass: 0
     customBufferFormat: 12
-    supportedLitShaderMode: 2
+    supportedLitShaderMode: 3
     supportDecals: 1
-    msaaSampleCount: 1
+    msaaSampleCount: 8
     supportMotionVectors: 1
     supportRuntimeDebugDisplay: 1
     supportDitheringCrossFade: 1
@@ -244,7 +244,7 @@ MonoBehaviour:
     hdShadowInitParams:
       maxShadowRequests: 128
       directionalShadowsDepthBits: 16
-      shadowFilteringQuality: 1
+      shadowFilteringQuality: 2
       punctualLightShadowAtlas:
         shadowAtlasResolution: 4096
         shadowAtlasDepthBits: 16
@@ -294,16 +294,16 @@ MonoBehaviour:
       singlePass: 1
       occlusionMesh: 1
     postProcessQualitySettings:
-      NearBlurSampleCount: 030000000500000008000000
+      NearBlurSampleCount: 030000000400000005000000
       NearBlurMaxRadius:
-      - 2
+      - 3
       - 4
-      - 7
-      FarBlurSampleCount: 04000000070000000e000000
-      FarBlurMaxRadius:
       - 5
+      FarBlurSampleCount: 06000000080000000a000000
+      FarBlurMaxRadius:
+      - 6
       - 8
-      - 13
+      - 10
       DoFResolution: 040000000200000001000000
       DoFHighQualityFiltering: 000101
       MotionBlurSampleCount: 04000000080000000c000000
