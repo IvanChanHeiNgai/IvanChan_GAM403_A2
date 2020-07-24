@@ -33,8 +33,8 @@ public class MouseLook : MonoBehaviour
         if (movecamera)
         {
             //Get Camera Rotation amount with GetAxis mutiple by sensitivity and delta time
-            mouseX = Input.GetAxis("Mouse X") * mouseXSensitivity * Time.deltaTime;
-            mouseY = Input.GetAxis("Mouse Y") * mouseYSensitivity * Time.deltaTime;
+            mouseX = (Input.GetAxis("Mouse X") * mouseXSensitivity * Time.deltaTime) / Time.timeScale;
+            mouseY = (Input.GetAxis("Mouse Y") * mouseYSensitivity * Time.deltaTime) / Time.timeScale;
 
             //invert Mouse if needed
             if(invertX)
@@ -67,9 +67,9 @@ public class MouseLook : MonoBehaviour
 
     IEnumerator ComeBack(float vv)
     {
-        float timing = (vv * Random.Range(0.5f, 1.5f)) / 100;
+        float timing = (vv * Random.Range(0.5f, 1.5f)) / 50;
         yield return new WaitForSeconds(0.075f);
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 50; i++)
         {
             xRotation += timing;
             yield return new WaitForSeconds(0.00125f);

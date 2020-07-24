@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 
 public class Pistol : MonoBehaviour
 {
+    //Input Systen Setup
     _Input input;
     [Header("Base Stats")]
     public int damage = 5;
@@ -63,9 +64,9 @@ public class Pistol : MonoBehaviour
     public Animator anim;
     public CameraShake CS;
     public MouseLook ML;
-    /*
     public Rigidbody Bullets;
     public GameObject BulletOutput;
+    /*
     public GameObject blood;
     public GameObject BloodDecal;
     */
@@ -180,7 +181,7 @@ public class Pistol : MonoBehaviour
             CR.transform.localRotation = Quaternion.Euler(Vector3.zero);
             WS.transform.localPosition = Vector3.zero;
             ads = true;
-            MainCamera.fieldOfView = 50.53402f;
+            MainCamera.fieldOfView = 46.69212f;
         }
         else
         {
@@ -259,11 +260,11 @@ public class Pistol : MonoBehaviour
         MuzzleFlash.SetActive(true);
         StartCoroutine(CS.Shake(0.25f, 1f));
         yield return new WaitForSeconds(0.125f);
+        Rigidbody bu = (Rigidbody)Instantiate(Bullets, BulletOutput.transform.position, BulletOutput.transform.rotation);
+        bu.velocity = BulletOutput.transform.TransformDirection(Vector3.forward * Random.Range(0.3125f, 0.375f));
+        Destroy(bu, 4f);
         MuzzleFlash.SetActive(false);
         yield return new WaitForSeconds(0.375f);
-        //Rigidbody bu = (Rigidbody)Instantiate(Bullets, BulletOutput.transform.position, BulletOutput.transform.rotation);
-        //bu.velocity = BulletOutput.transform.TransformDirection(Vector3.forward * Random.Range(-0.25f, -0.3f));
-        //Destroy(bu, 4f);
         anim.SetBool("Fire", false);
         int c = 0;
         currentAmmo--;

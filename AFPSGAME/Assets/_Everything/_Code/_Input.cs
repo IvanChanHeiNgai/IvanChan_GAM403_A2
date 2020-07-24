@@ -89,6 +89,14 @@ public class @_Input : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""SlowMo"",
+                    ""type"": ""Button"",
+                    ""id"": ""35a4e5b7-753d-4823-9668-9a035b72aa35"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -190,6 +198,17 @@ public class @_Input : IInputActionCollection, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""175168ea-3aa3-43dd-862d-b00ec81d20d8"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SlowMo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -207,6 +226,7 @@ public class @_Input : IInputActionCollection, IDisposable
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Secondary = m_Player.FindAction("Secondary", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
+        m_Player_SlowMo = m_Player.FindAction("SlowMo", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -265,6 +285,7 @@ public class @_Input : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Secondary;
     private readonly InputAction m_Player_Reload;
+    private readonly InputAction m_Player_SlowMo;
     public struct PlayerActions
     {
         private @_Input m_Wrapper;
@@ -278,6 +299,7 @@ public class @_Input : IInputActionCollection, IDisposable
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Secondary => m_Wrapper.m_Player_Secondary;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
+        public InputAction @SlowMo => m_Wrapper.m_Player_SlowMo;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -314,6 +336,9 @@ public class @_Input : IInputActionCollection, IDisposable
                 @Reload.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReload;
                 @Reload.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReload;
                 @Reload.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReload;
+                @SlowMo.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSlowMo;
+                @SlowMo.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSlowMo;
+                @SlowMo.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSlowMo;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -345,6 +370,9 @@ public class @_Input : IInputActionCollection, IDisposable
                 @Reload.started += instance.OnReload;
                 @Reload.performed += instance.OnReload;
                 @Reload.canceled += instance.OnReload;
+                @SlowMo.started += instance.OnSlowMo;
+                @SlowMo.performed += instance.OnSlowMo;
+                @SlowMo.canceled += instance.OnSlowMo;
             }
         }
     }
@@ -360,5 +388,6 @@ public class @_Input : IInputActionCollection, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnSecondary(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnSlowMo(InputAction.CallbackContext context);
     }
 }
