@@ -97,6 +97,14 @@ public class @_Input : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Sprite"",
+                    ""type"": ""Button"",
+                    ""id"": ""fc685147-d365-41e6-bc8b-c8c18c87d5ab"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -209,6 +217,17 @@ public class @_Input : IInputActionCollection, IDisposable
                     ""action"": ""SlowMo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6b8f09cc-6a96-45d7-a240-a53719cfa0c8"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprite"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -227,6 +246,7 @@ public class @_Input : IInputActionCollection, IDisposable
         m_Player_Secondary = m_Player.FindAction("Secondary", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
         m_Player_SlowMo = m_Player.FindAction("SlowMo", throwIfNotFound: true);
+        m_Player_Sprite = m_Player.FindAction("Sprite", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -286,6 +306,7 @@ public class @_Input : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Secondary;
     private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_SlowMo;
+    private readonly InputAction m_Player_Sprite;
     public struct PlayerActions
     {
         private @_Input m_Wrapper;
@@ -300,6 +321,7 @@ public class @_Input : IInputActionCollection, IDisposable
         public InputAction @Secondary => m_Wrapper.m_Player_Secondary;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
         public InputAction @SlowMo => m_Wrapper.m_Player_SlowMo;
+        public InputAction @Sprite => m_Wrapper.m_Player_Sprite;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -339,6 +361,9 @@ public class @_Input : IInputActionCollection, IDisposable
                 @SlowMo.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSlowMo;
                 @SlowMo.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSlowMo;
                 @SlowMo.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSlowMo;
+                @Sprite.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprite;
+                @Sprite.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprite;
+                @Sprite.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprite;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -373,6 +398,9 @@ public class @_Input : IInputActionCollection, IDisposable
                 @SlowMo.started += instance.OnSlowMo;
                 @SlowMo.performed += instance.OnSlowMo;
                 @SlowMo.canceled += instance.OnSlowMo;
+                @Sprite.started += instance.OnSprite;
+                @Sprite.performed += instance.OnSprite;
+                @Sprite.canceled += instance.OnSprite;
             }
         }
     }
@@ -389,5 +417,6 @@ public class @_Input : IInputActionCollection, IDisposable
         void OnSecondary(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnSlowMo(InputAction.CallbackContext context);
+        void OnSprite(InputAction.CallbackContext context);
     }
 }

@@ -47,6 +47,7 @@ public class Pistol : MonoBehaviour
     public int LowAmmoAmount = 3;
     public Text AmmoUI;
     public Text MaxAmmoUI;
+    public Animator AnimUI;
     //I am commenting this out cause i don't have any sfx yet
     //but in the future i will add it
     /*
@@ -162,19 +163,23 @@ public class Pistol : MonoBehaviour
             if (!cro)
             {
                 walk = true;
+                AnimUI.SetBool("Walking", true);
             }
             else
             {
                 walk = false;
+                AnimUI.SetBool("Walking", false);
             }
         }
         else
         {
             walk = false;
+            AnimUI.SetBool("Walking", false);
         }
         if (firesec && !isReloading)
         {
             anim.SetBool("ADS", true);
+            AnimUI.SetBool("Ads", true);
             WS.enabled = false;
             CR.enabled = false;
             CR.transform.localPosition = Vector3.zero;
@@ -186,6 +191,7 @@ public class Pistol : MonoBehaviour
         else
         {
             anim.SetBool("ADS", false);
+            AnimUI.SetBool("Ads", false);
             WS.enabled = true;
             CR.enabled = true;
             ads = false;

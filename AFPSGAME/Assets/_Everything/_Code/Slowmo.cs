@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Slowmo : MonoBehaviour
 {
@@ -8,30 +9,47 @@ public class Slowmo : MonoBehaviour
     _Input input;
 
     public float TimeSlowAmount = 0.25f;
-    public GameObject PP;
+    public Volume PP;
     bool sm;
-
 
     void Awake()
     {
         //input System
         input = new _Input();
 
-        input.Player.SlowMo.performed += ctx => sm = !sm;
+        input.Player.SlowMo.performed += ctx => SM();
     }
 
-    // Update is called once per frame
-    void Update()
+    void SM()
     {
-        if(sm)
+        sm = !sm;
+        if (sm)
         {
             Time.timeScale = TimeSlowAmount;
-            PP.SetActive(true);
+            StartCoroutine(activate());
         }
         else
         {
             Time.timeScale = 1f;
-            PP.SetActive(false);
+            StartCoroutine(deactivate());
+        }
+    }
+
+    IEnumerator activate()
+    {
+        while(PP.weight < 1)
+        {
+            yield return new WaitForSeconds(0.01f);
+            PP.weight += 0.2f;
+        }
+    }
+
+    IEnumerator deactivate()
+    {
+        while (PP.weight > 0)
+        {
+            yield return new WaitForSeconds(0.01f);
+            PP.weight -= 0.2f;
         }
     }
 
