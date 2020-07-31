@@ -8,8 +8,10 @@ public class PlayerMovement : MonoBehaviour
     _Input input;
     [Header("Set-Up")]
     public CharacterController Controller;
+    public Animator anim;
     [Header("Player Stats")]
     public float Speed = 2.5f;
+    public float SpriteSpeed = 5f;
     public float CrouchSpeed = 1.25f;
     public float Gravity = -9.81f;
     public float jumpHeight = 3f;
@@ -18,12 +20,17 @@ public class PlayerMovement : MonoBehaviour
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
     [Header("Hidden Variables")]
-    float x;
-    float z;
+    [HideInInspector]
+    public float x;
+    [HideInInspector]
+    public float z;
     bool jumped;
+    [HideInInspector]
+    public bool Spriting;
     [HideInInspector]
     public bool crouch;
     Vector3 velocity;
+    [HideInInspector]
     public bool isGrounded;
     float gravity;
     Vector3 move;
@@ -43,6 +50,9 @@ public class PlayerMovement : MonoBehaviour
         input.Player.Left.canceled += ctx => x += 1;
         input.Player.Right.performed += ctx => x += 1;
         input.Player.Right.canceled += ctx => x += -1;
+
+        input.Player.Sprite.performed += ctx => Spriting = true;
+        input.Player.Sprite.canceled += ctx => Spriting = false;
 
         input.Player.Jump.performed += ctx => jumped = true;
         input.Player.Jump.canceled += ctx => jumped = false;
@@ -68,13 +78,38 @@ public class PlayerMovement : MonoBehaviour
         //apply calculations to move variable movement if player is grounded
         if (isGrounded)
         {
+            if(x == 0 && z == 0)
+            {
+                anim.SetBool("Walk", false);
+                anim.SetBool("Sprite", false);
+            }
+            else
+            {
+                if(Spriting)
+                {
+                    anim.SetBool("Sprite", true);
+                }
+                else
+                {
+                    anim.SetBool("Walk", true);
+                    anim.SetBool("Sprite", false);
+                }
+            }
             move = Vector3.Normalize(transform.right * x + transform.forward * z);
         }
 
         //if player's crouching, use to crouch speed instead of regular speed
         if (!crouch)
         {
-            Controller.Move((move * Speed) * Time.deltaTime);
+            //if player's spriting, use to sprit speed instead of regular speed
+            if (Spriting)
+            {
+                Controller.Move((move * SpriteSpeed) * Time.deltaTime);
+            }
+            else
+            {
+                Controller.Move((move * Speed) * Time.deltaTime);
+            }
         }
         else
         {

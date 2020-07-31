@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class Slowmo : MonoBehaviour
 {
     //Input Systen Setup
     _Input input;
 
+    [Range(0.1f, 0.9f)]
     public float TimeSlowAmount = 0.25f;
+    public int SlowDownMeter = 100;
+    public Image MeterUI;
     public Volume PP;
     bool sm;
+    float nttsm;
 
     void Awake()
     {
@@ -20,13 +25,34 @@ public class Slowmo : MonoBehaviour
         input.Player.SlowMo.performed += ctx => SM();
     }
 
+    void Update()
+    {
+        MeterUI.fillAmount = (float)SlowDownMeter / 100;
+        if(sm && nttsm <= Time.time && SlowDownMeter > 0)
+        {
+            nttsm = Time.time + 0.025f;
+            SlowDownMeter--;
+        }
+        if(SlowDownMeter <= 0 && sm)
+        {
+            SM();
+        }
+    }
+
     void SM()
     {
         sm = !sm;
         if (sm)
         {
-            Time.timeScale = TimeSlowAmount;
-            StartCoroutine(activate());
+            if(SlowDownMeter > 0)
+            {
+                Time.timeScale = TimeSlowAmount;
+                StartCoroutine(activate());
+            }
+            else
+            {
+                sm = false;
+            }
         }
         else
         {
@@ -42,6 +68,7 @@ public class Slowmo : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
             PP.weight += 0.2f;
         }
+        nttsm = Time.time + 0.1f;
     }
 
     IEnumerator deactivate()

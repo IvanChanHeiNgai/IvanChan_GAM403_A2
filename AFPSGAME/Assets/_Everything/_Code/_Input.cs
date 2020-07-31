@@ -105,6 +105,22 @@ public class @_Input : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pistol"",
+                    ""type"": ""Button"",
+                    ""id"": ""ad96833f-61cc-49e0-a623-a0a3d4b74a4d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Shotgun"",
+                    ""type"": ""Button"",
+                    ""id"": ""e850007a-88d8-4a2f-a95a-49ef51fc7f32"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -228,6 +244,28 @@ public class @_Input : IInputActionCollection, IDisposable
                     ""action"": ""Sprite"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f3e3c96-2594-4772-a7de-9a0c7533664a"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pistol"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8f434fa2-c2aa-4388-bac2-315e8d0152d7"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shotgun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -247,6 +285,8 @@ public class @_Input : IInputActionCollection, IDisposable
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
         m_Player_SlowMo = m_Player.FindAction("SlowMo", throwIfNotFound: true);
         m_Player_Sprite = m_Player.FindAction("Sprite", throwIfNotFound: true);
+        m_Player_Pistol = m_Player.FindAction("Pistol", throwIfNotFound: true);
+        m_Player_Shotgun = m_Player.FindAction("Shotgun", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -307,6 +347,8 @@ public class @_Input : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_SlowMo;
     private readonly InputAction m_Player_Sprite;
+    private readonly InputAction m_Player_Pistol;
+    private readonly InputAction m_Player_Shotgun;
     public struct PlayerActions
     {
         private @_Input m_Wrapper;
@@ -322,6 +364,8 @@ public class @_Input : IInputActionCollection, IDisposable
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
         public InputAction @SlowMo => m_Wrapper.m_Player_SlowMo;
         public InputAction @Sprite => m_Wrapper.m_Player_Sprite;
+        public InputAction @Pistol => m_Wrapper.m_Player_Pistol;
+        public InputAction @Shotgun => m_Wrapper.m_Player_Shotgun;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -364,6 +408,12 @@ public class @_Input : IInputActionCollection, IDisposable
                 @Sprite.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprite;
                 @Sprite.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprite;
                 @Sprite.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprite;
+                @Pistol.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPistol;
+                @Pistol.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPistol;
+                @Pistol.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPistol;
+                @Shotgun.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShotgun;
+                @Shotgun.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShotgun;
+                @Shotgun.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShotgun;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -401,6 +451,12 @@ public class @_Input : IInputActionCollection, IDisposable
                 @Sprite.started += instance.OnSprite;
                 @Sprite.performed += instance.OnSprite;
                 @Sprite.canceled += instance.OnSprite;
+                @Pistol.started += instance.OnPistol;
+                @Pistol.performed += instance.OnPistol;
+                @Pistol.canceled += instance.OnPistol;
+                @Shotgun.started += instance.OnShotgun;
+                @Shotgun.performed += instance.OnShotgun;
+                @Shotgun.canceled += instance.OnShotgun;
             }
         }
     }
@@ -418,5 +474,7 @@ public class @_Input : IInputActionCollection, IDisposable
         void OnReload(InputAction.CallbackContext context);
         void OnSlowMo(InputAction.CallbackContext context);
         void OnSprite(InputAction.CallbackContext context);
+        void OnPistol(InputAction.CallbackContext context);
+        void OnShotgun(InputAction.CallbackContext context);
     }
 }

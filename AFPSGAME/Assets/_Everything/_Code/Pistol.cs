@@ -57,6 +57,7 @@ public class Pistol : MonoBehaviour
     public GameObject HitSFX;
     */
     [Header("Others")]
+    public PlayerMovement PM;
     public Weapon_sway WS;
     public CameraRumble CR;
     public GameObject HitEffect;
@@ -73,11 +74,7 @@ public class Pistol : MonoBehaviour
     */
 
     [Header("Hidden")]
-    bool left;
-    bool right;
-    bool up;
-    bool down;
-    bool cro;
+    bool sprit;
     bool walk;
     bool shooted;
     float nttf;
@@ -97,21 +94,10 @@ public class Pistol : MonoBehaviour
         input.Player.Secondary.performed += ctx => firesec = true;
         input.Player.Secondary.canceled += ctx => firesec = false;
         input.Player.Reload.performed += ctx => reloadpress = true;
-
-        input.Player.Forward.performed += ctx => up = true;
-        input.Player.Forward.canceled += ctx => up = false;
-        input.Player.Back.performed += ctx => down = true;
-        input.Player.Back.canceled += ctx => down = false;
-        input.Player.Left.performed += ctx => left = true;
-        input.Player.Left.canceled += ctx => left = false;
-        input.Player.Right.performed += ctx => right = true;
-        input.Player.Right.canceled += ctx => right = false;
-        input.Player.Crouch.performed += ctx => cro = !cro;
     }
 
     void OnEnable()
     {
-        cro = this.GetComponentInParent<PlayerMovement>().crouch;
         isReloading = false;
         anim.SetBool("Reload", false);
         anim.SetBool("Fire", false);
@@ -143,7 +129,7 @@ public class Pistol : MonoBehaviour
         if (fire1)
         {
             //fire1 = false;
-            if (nttf < Time.time && currentAmmo > 0 && !isReloading)
+            if (nttf < Time.time && currentAmmo > 0 && !isReloading && !sprit)
             {
                 nttf = Time.time + (1 / fireRate);
                 StartCoroutine(fire());
@@ -158,25 +144,35 @@ public class Pistol : MonoBehaviour
                 }
             }
         }
-        if (left || right || up || down)
+        if (PM.x == 0 && PM.z == 0)
         {
-            if (!cro)
+            walk = false;
+            AnimUI.SetBool("Walking", false);
+            sprit = false;
+        }
+        else
+        {
+            if (!PM.crouch)
             {
                 walk = true;
                 AnimUI.SetBool("Walking", true);
+                if (PM.Spriting)
+                {
+                    sprit = true;
+                }
+                else
+                {
+                    sprit = false;
+                }
             }
             else
             {
                 walk = false;
                 AnimUI.SetBool("Walking", false);
+                sprit = false;
             }
         }
-        else
-        {
-            walk = false;
-            AnimUI.SetBool("Walking", false);
-        }
-        if (firesec && !isReloading)
+        if (firesec && !isReloading && !sprit)
         {
             anim.SetBool("ADS", true);
             AnimUI.SetBool("Ads", true);
@@ -198,11 +194,11 @@ public class Pistol : MonoBehaviour
             MainCamera.fieldOfView = 58.71551f;
         }
 
-        if (!isReloading && currentAmmo <= 0 && ReservedAmmo != 0)
+        if (!isReloading && currentAmmo <= 0 && ReservedAmmo != 0 && !sprit)
         {
             StartCoroutine(reload());
         }
-        if (reloadpress && currentAmmo != maxAmmo && !isReloading && ReservedAmmo != 0)
+        if (reloadpress && currentAmmo != maxAmmo && !isReloading && ReservedAmmo != 0 && !sprit)
         {
             reloadpress = false;
             StartCoroutine(reload());
