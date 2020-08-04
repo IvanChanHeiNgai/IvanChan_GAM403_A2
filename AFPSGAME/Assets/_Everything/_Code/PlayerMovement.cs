@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
+    [Header("Weapons")]
+    public AssultRifle AR;
     [Header("Hidden Variables")]
     [HideInInspector]
     public float x;
@@ -78,14 +80,14 @@ public class PlayerMovement : MonoBehaviour
         //apply calculations to move variable movement if player is grounded
         if (isGrounded)
         {
-            if(x == 0 && z == 0)
+            if(x == 0 && z == 0 || AR.ads)
             {
                 anim.SetBool("Walk", false);
                 anim.SetBool("Sprite", false);
             }
             else
             {
-                if(Spriting)
+                if(Spriting && !crouch)
                 {
                     anim.SetBool("Sprite", true);
                 }

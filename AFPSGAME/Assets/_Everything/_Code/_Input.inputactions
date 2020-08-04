@@ -108,6 +108,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Assult Rifle",
+                    "type": "Button",
+                    "id": "e2ac364f-dbd3-4aeb-83d4-03f5d7438fb2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -251,6 +259,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Shotgun",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8c5bd769-4d3a-424e-b1c3-e2d0693bfa68",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Assult Rifle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

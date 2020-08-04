@@ -266,11 +266,10 @@ public class Pistol : MonoBehaviour
         bu.velocity = BulletOutput.transform.TransformDirection(Vector3.forward * Random.Range(0.3125f, 0.375f));
         Destroy(bu, 4f);
         MuzzleFlash.SetActive(false);
-        yield return new WaitForSeconds(0.375f);
+        yield return new WaitForSeconds(0.125f);
         anim.SetBool("Fire", false);
         int c = 0;
         currentAmmo--;
-        yield return new WaitForSeconds(0.075f);
     }
 
     IEnumerator reload()

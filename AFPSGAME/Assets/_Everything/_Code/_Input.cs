@@ -121,6 +121,14 @@ public class @_Input : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Assult Rifle"",
+                    ""type"": ""Button"",
+                    ""id"": ""e2ac364f-dbd3-4aeb-83d4-03f5d7438fb2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -266,6 +274,17 @@ public class @_Input : IInputActionCollection, IDisposable
                     ""action"": ""Shotgun"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c5bd769-4d3a-424e-b1c3-e2d0693bfa68"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Assult Rifle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -287,6 +306,7 @@ public class @_Input : IInputActionCollection, IDisposable
         m_Player_Sprite = m_Player.FindAction("Sprite", throwIfNotFound: true);
         m_Player_Pistol = m_Player.FindAction("Pistol", throwIfNotFound: true);
         m_Player_Shotgun = m_Player.FindAction("Shotgun", throwIfNotFound: true);
+        m_Player_AssultRifle = m_Player.FindAction("Assult Rifle", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -349,6 +369,7 @@ public class @_Input : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Sprite;
     private readonly InputAction m_Player_Pistol;
     private readonly InputAction m_Player_Shotgun;
+    private readonly InputAction m_Player_AssultRifle;
     public struct PlayerActions
     {
         private @_Input m_Wrapper;
@@ -366,6 +387,7 @@ public class @_Input : IInputActionCollection, IDisposable
         public InputAction @Sprite => m_Wrapper.m_Player_Sprite;
         public InputAction @Pistol => m_Wrapper.m_Player_Pistol;
         public InputAction @Shotgun => m_Wrapper.m_Player_Shotgun;
+        public InputAction @AssultRifle => m_Wrapper.m_Player_AssultRifle;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -414,6 +436,9 @@ public class @_Input : IInputActionCollection, IDisposable
                 @Shotgun.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShotgun;
                 @Shotgun.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShotgun;
                 @Shotgun.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShotgun;
+                @AssultRifle.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAssultRifle;
+                @AssultRifle.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAssultRifle;
+                @AssultRifle.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAssultRifle;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -457,6 +482,9 @@ public class @_Input : IInputActionCollection, IDisposable
                 @Shotgun.started += instance.OnShotgun;
                 @Shotgun.performed += instance.OnShotgun;
                 @Shotgun.canceled += instance.OnShotgun;
+                @AssultRifle.started += instance.OnAssultRifle;
+                @AssultRifle.performed += instance.OnAssultRifle;
+                @AssultRifle.canceled += instance.OnAssultRifle;
             }
         }
     }
@@ -476,5 +504,6 @@ public class @_Input : IInputActionCollection, IDisposable
         void OnSprite(InputAction.CallbackContext context);
         void OnPistol(InputAction.CallbackContext context);
         void OnShotgun(InputAction.CallbackContext context);
+        void OnAssultRifle(InputAction.CallbackContext context);
     }
 }

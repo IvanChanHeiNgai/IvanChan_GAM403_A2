@@ -16,6 +16,7 @@ public class Slowmo : MonoBehaviour
     public Volume PP;
     bool sm;
     float nttsm;
+    float nttRC;
 
     void Awake()
     {
@@ -36,6 +37,11 @@ public class Slowmo : MonoBehaviour
         if(SlowDownMeter <= 0 && sm)
         {
             SM();
+        }
+        if(!sm && nttRC <= Time.time && SlowDownMeter < 100)
+        {
+            nttRC = Time.time + 0.1f;
+            SlowDownMeter++;
         }
     }
 

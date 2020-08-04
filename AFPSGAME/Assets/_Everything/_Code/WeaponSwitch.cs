@@ -20,6 +20,7 @@ public class WeaponSwitch : MonoBehaviour
 
         input.Player.Pistol.performed += ctx => StartCoroutine(ChangeWeapon(0));
         input.Player.Shotgun.performed += ctx => StartCoroutine(ChangeWeapon(1));
+        input.Player.AssultRifle.performed += ctx => StartCoroutine(ChangeWeapon(2));
     }
 
     IEnumerator ChangeWeapon(int weapon)
