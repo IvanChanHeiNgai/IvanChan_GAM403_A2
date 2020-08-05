@@ -129,6 +129,14 @@ public class @_Input : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Grenade"",
+                    ""type"": ""Button"",
+                    ""id"": ""0e501da7-984c-4cac-a903-be3f1fb220f2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -234,7 +242,7 @@ public class @_Input : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""175168ea-3aa3-43dd-862d-b00ec81d20d8"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -285,6 +293,17 @@ public class @_Input : IInputActionCollection, IDisposable
                     ""action"": ""Assult Rifle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a1716e5-b229-4fff-852d-cd8dc7235f75"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Grenade"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -307,6 +326,7 @@ public class @_Input : IInputActionCollection, IDisposable
         m_Player_Pistol = m_Player.FindAction("Pistol", throwIfNotFound: true);
         m_Player_Shotgun = m_Player.FindAction("Shotgun", throwIfNotFound: true);
         m_Player_AssultRifle = m_Player.FindAction("Assult Rifle", throwIfNotFound: true);
+        m_Player_Grenade = m_Player.FindAction("Grenade", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -370,6 +390,7 @@ public class @_Input : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Pistol;
     private readonly InputAction m_Player_Shotgun;
     private readonly InputAction m_Player_AssultRifle;
+    private readonly InputAction m_Player_Grenade;
     public struct PlayerActions
     {
         private @_Input m_Wrapper;
@@ -388,6 +409,7 @@ public class @_Input : IInputActionCollection, IDisposable
         public InputAction @Pistol => m_Wrapper.m_Player_Pistol;
         public InputAction @Shotgun => m_Wrapper.m_Player_Shotgun;
         public InputAction @AssultRifle => m_Wrapper.m_Player_AssultRifle;
+        public InputAction @Grenade => m_Wrapper.m_Player_Grenade;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -439,6 +461,9 @@ public class @_Input : IInputActionCollection, IDisposable
                 @AssultRifle.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAssultRifle;
                 @AssultRifle.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAssultRifle;
                 @AssultRifle.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAssultRifle;
+                @Grenade.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrenade;
+                @Grenade.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrenade;
+                @Grenade.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrenade;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -485,6 +510,9 @@ public class @_Input : IInputActionCollection, IDisposable
                 @AssultRifle.started += instance.OnAssultRifle;
                 @AssultRifle.performed += instance.OnAssultRifle;
                 @AssultRifle.canceled += instance.OnAssultRifle;
+                @Grenade.started += instance.OnGrenade;
+                @Grenade.performed += instance.OnGrenade;
+                @Grenade.canceled += instance.OnGrenade;
             }
         }
     }
@@ -505,5 +533,6 @@ public class @_Input : IInputActionCollection, IDisposable
         void OnPistol(InputAction.CallbackContext context);
         void OnShotgun(InputAction.CallbackContext context);
         void OnAssultRifle(InputAction.CallbackContext context);
+        void OnGrenade(InputAction.CallbackContext context);
     }
 }

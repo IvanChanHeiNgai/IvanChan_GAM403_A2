@@ -183,7 +183,7 @@ public class Shotgun : MonoBehaviour
             CR.transform.localRotation = Quaternion.Euler(Vector3.zero);
             WS.transform.localPosition = Vector3.zero;
             ads = true;
-            MainCamera.fieldOfView = 46.69212f;
+            MainCamera.fieldOfView = 35.98339f;
         }
         else
         {
@@ -203,6 +203,10 @@ public class Shotgun : MonoBehaviour
         {
             reloadpress = false;
             StartCoroutine(reload());
+        }
+        else
+        {
+            reloadpress = false;
         }
     }
 

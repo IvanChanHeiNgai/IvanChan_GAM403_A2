@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundMask;
     [Header("Weapons")]
     public AssultRifle AR;
+    public Shotgun SG;
+    public Pistol P;
     [Header("Hidden Variables")]
     [HideInInspector]
     public float x;
@@ -80,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
         //apply calculations to move variable movement if player is grounded
         if (isGrounded)
         {
-            if(x == 0 && z == 0 || AR.ads)
+            if(x == 0 && z == 0 || AR.ads || SG.ads || P.ads)
             {
                 anim.SetBool("Walk", false);
                 anim.SetBool("Sprite", false);
