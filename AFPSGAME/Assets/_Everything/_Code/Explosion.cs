@@ -19,13 +19,22 @@ public class Explosion : MonoBehaviour
             
             if (hit.CompareTag("Player"))
             {
-                target = hit.gameObject;
+                PlayerHealth P_HP = hit.GetComponent<PlayerHealth>();
+                if (P_HP != null)
+                {
+                    P_HP.TakeDamage(120 - (int)(Vector3.Distance(transform.position, P_HP.transform.position) * 10));
+                }
             }
-            PlayerHealth P_HP = hit.GetComponent<PlayerHealth>();
-            if (P_HP != null)
+            if (hit.CompareTag("Enemy"))
             {
-                P_HP.TakeDamage(120 - (int)(Vector3.Distance(transform.position, target.transform.position) * 10));
+                Enemy E_HP = hit.GetComponentInParent<Enemy>();
+                if (E_HP != null)
+                {
+                    E_HP.Health -= (120 - (int)(Vector3.Distance(transform.position, E_HP.transform.position))) / 10;
+                }
             }
+
+
             if (rb != null)
             {
                 rb.AddExplosionForce(power, explosionPos, radius, power);

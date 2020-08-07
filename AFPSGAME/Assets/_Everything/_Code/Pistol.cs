@@ -68,10 +68,8 @@ public class Pistol : MonoBehaviour
     public MouseLook ML;
     public Rigidbody Bullets;
     public GameObject BulletOutput;
-    /*
     public GameObject blood;
     public GameObject BloodDecal;
-    */
 
     [Header("Hidden")]
     bool sprit;
@@ -248,8 +246,29 @@ public class Pistol : MonoBehaviour
             {
                 GameObject hole = Instantiate(BulletHole, hit.point, Quaternion.LookRotation(hit.normal));
             }
-            GameObject impactGO = Instantiate(HitEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactGO, 1f);
+            if ((hit.collider.CompareTag("Enemy")))
+            {
+                Enemy E_HP = hit.collider.GetComponentInParent<Enemy>();
+                if (E_HP != null)
+                {
+                    GameObject b = Instantiate(blood, hit.point, blood.transform.rotation);
+                    Destroy(b, 2f);
+                    Instantiate(BloodDecal, hit.point, Quaternion.Euler(270, 0, 90), hit.collider.gameObject.transform);
+                    if (hit.collider.name == "mixamorig:Head")
+                    {
+                        E_HP.Health -= damage * 2;
+                    }
+                    else
+                    {
+                        E_HP.Health -= damage;
+                    }
+                }
+            }
+            else
+            {
+                GameObject impactGO = Instantiate(HitEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(impactGO, 1f);
+            }
             yield return new WaitForSeconds(0.1f);
             if (hit.rigidbody != null)
             {
