@@ -64,6 +64,7 @@ public class Slowmo : MonoBehaviour
         {
             Time.timeScale = 1f;
             StartCoroutine(deactivate());
+            nttRC = Time.time + 5f;
         }
     }
 

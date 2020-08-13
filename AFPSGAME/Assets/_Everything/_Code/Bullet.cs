@@ -27,8 +27,6 @@ public class Bullet : MonoBehaviour
         {
             if (collision.gameObject.GetComponent<PlayerHealth>() != null)
             {
-                //GameObject blood = Instantiate(Blood, contact.point, Quaternion.LookRotation(contact.normal));
-                //Destroy(blood, 1.9f);
                 collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(1);
                 Destroy(this.gameObject);
             }
@@ -41,10 +39,22 @@ public class Bullet : MonoBehaviour
                 }
                 else
                 {
-                    Instantiate(BulletHole, contact.point, Quaternion.LookRotation(contact.normal));
-                    Destroy(this.gameObject);
-                    //GameObject smoke = Instantiate(Smoke, contact.point, Quaternion.LookRotation(contact.normal));
-                    //Destroy(smoke, 1.9f);
+                    if(collision.gameObject.GetComponent<Rigidbody>() == null)
+                    {
+                        Instantiate(BulletHole, contact.point, Quaternion.LookRotation(contact.normal));
+                        Destroy(this.gameObject);
+                    }
+                    if(collision.collider.name != "Physics" && collision.collider.name != "Camera")
+                    {
+                        GameObject smoke = Instantiate(Smoke, contact.point, Quaternion.LookRotation(contact.normal));
+                        Destroy(smoke, 1.9f);
+                        Destroy(this.gameObject);
+                    }
+                    else
+                    {
+                        collision.gameObject.GetComponentInParent<PlayerHealth>().TakeDamage(1);
+                        Destroy(this.gameObject);
+                    }
                 }
             }
         }

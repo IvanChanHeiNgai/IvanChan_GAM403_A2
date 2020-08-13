@@ -16,7 +16,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   quality:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 0
   focusMode:
     m_OverrideState: 1
     m_Value: 2
@@ -88,7 +88,7 @@ MonoBehaviour:
     m_Value: {fileID: 0}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.25
+    m_Value: 0.5
     min: 0
     max: 1
   m_MaxSamples:
@@ -167,7 +167,7 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 2
     min: 0
     max: 4
   directLightingStrength:
@@ -313,7 +313,7 @@ MonoBehaviour:
     min: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.75
+    m_Value: 0.25
     min: 0
     max: 1
   scatter:
@@ -332,7 +332,7 @@ MonoBehaviour:
     m_Value: {fileID: 2800000, guid: 3884f7a2d04ffe8409ad9200b275896f, type: 3}
   dirtIntensity:
     m_OverrideState: 1
-    m_Value: 0.625
+    m_Value: 6.25
     min: 0
   anamorphic:
     m_OverrideState: 1
@@ -371,7 +371,7 @@ MonoBehaviour:
     max: 1500
   minimumVelocity:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 64
     min: 0
     max: 64
   cameraRotationVelocityClamp:
@@ -404,7 +404,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   postExposure:
     m_OverrideState: 1
-    m_Value: -1.25
+    m_Value: -0.625
   contrast:
     m_OverrideState: 1
     m_Value: 0
@@ -423,7 +423,7 @@ MonoBehaviour:
     max: 180
   saturation:
     m_OverrideState: 1
-    m_Value: -37.5
+    m_Value: -25
     min: -100
     max: 100
 --- !u!114 &6640133647794636954
@@ -647,7 +647,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.35
+    m_Value: 0.25
     min: 0
     max: 1
   smoothness:

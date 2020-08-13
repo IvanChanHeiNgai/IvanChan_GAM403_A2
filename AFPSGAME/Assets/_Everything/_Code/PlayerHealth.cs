@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class PlayerHealth : MonoBehaviour
     public Rigidbody RBC;
     public PlayerMovement PM;
     public GameObject Weapons;
+    public GameObject YOUDIED;
 
     void Awake()
     {
@@ -29,6 +31,8 @@ public class PlayerHealth : MonoBehaviour
             ML.enabled = false;
             RBC.isKinematic = false;
             Weapons.SetActive(false);
+            RBC.transform.parent = null;
+            StartCoroutine(Reset());
         }
         BloodFace.color = new Color(1, 0, 0, (1 - ((float)Health/(float)MaxHealth))/4);
         if (Health < MaxHealth && ntth <= Time.time)
@@ -40,11 +44,18 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int dmg)
     {
-        if(dmg > 0)
+        if(dmg > 0 && Health > 0)
         {
             ntth = Time.time + 5f;
             Health -= dmg;
-            ML.Recoil(5f, 5f);
+            ML.Recoil(1f, 1f);
         }
+    }
+
+    IEnumerator Reset()
+    {
+        YOUDIED.SetActive(true);
+        yield return new WaitForSeconds(6f);
+        SceneManager.LoadScene("SampleScene");
     }
 }

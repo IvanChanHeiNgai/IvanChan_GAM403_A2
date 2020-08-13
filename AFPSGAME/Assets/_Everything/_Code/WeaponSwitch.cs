@@ -13,6 +13,8 @@ public class WeaponSwitch : MonoBehaviour
 
     public GameObject[] WeaponIcons;
 
+    int csw;
+
     void Awake()
     {
         //input System
@@ -21,12 +23,18 @@ public class WeaponSwitch : MonoBehaviour
         input.Player.Pistol.performed += ctx => StartCoroutine(ChangeWeapon(0));
         input.Player.Shotgun.performed += ctx => StartCoroutine(ChangeWeapon(1));
         input.Player.AssultRifle.performed += ctx => StartCoroutine(ChangeWeapon(2));
+        input.Player.NextWeapon.performed += ctx => StartCoroutine(ChangeWeapon(CurrentWeapon - ((int)ctx.ReadValue<float>()) / 120));
+        input.Player.NextWeapon.canceled += ctx => csw = 0;
     }
 
     IEnumerator ChangeWeapon(int weapon)
     {
         if(CurrentWeapon != weapon)
         {
+            if (weapon > 2)
+                weapon = 0;
+            else if (weapon < 0)
+                weapon = 2;
             CurrentWeapon = weapon;
             anim.SetBool("hide", true);
             yield return new WaitForSeconds(0.15f);

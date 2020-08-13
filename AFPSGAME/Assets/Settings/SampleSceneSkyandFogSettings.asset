@@ -1,5 +1,27 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4755867017163347372
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f034cba68ab55e046ae1445a42f18c0e, type: 3}
+  m_Name: IndirectLightingController
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  indirectSpecularIntensity:
+    m_OverrideState: 1
+    m_Value: 1
+    min: 0
+  indirectDiffuseIntensity:
+    m_OverrideState: 1
+    m_Value: 1
+    min: 0
 --- !u!114 &-1658960478407648048
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -119,6 +141,7 @@ MonoBehaviour:
   - {fileID: 5321722785694334585}
   - {fileID: 4821687495359037725}
   - {fileID: 3588682214349043743}
+  - {fileID: -4755867017163347372}
 --- !u!114 &3588682214349043743
 MonoBehaviour:
   m_ObjectHideFlags: 3

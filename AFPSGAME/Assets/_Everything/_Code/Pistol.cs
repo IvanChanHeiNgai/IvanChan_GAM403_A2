@@ -48,14 +48,12 @@ public class Pistol : MonoBehaviour
     public Text AmmoUI;
     public Text MaxAmmoUI;
     public Animator AnimUI;
-    //I am commenting this out cause i don't have any sfx yet
-    //but in the future i will add it
-    /*
+
     [Header("Audio")]
-    public GameObject AS;
-    public GameObject Reload;
-    public GameObject HitSFX;
-    */
+    public AudioSource AS;
+    public AudioClip shoot;
+    public AudioClip Reload;
+
     [Header("Others")]
     public PlayerMovement PM;
     public Weapon_sway WS;
@@ -279,8 +277,7 @@ public class Pistol : MonoBehaviour
 
     IEnumerator animateFire()
     {
-        //GameObject fire = Instantiate(AS, MuzzleFlash.transform.position, AS.transform.rotation);
-        //Destroy(fire, 1.6275f);
+        AS.PlayOneShot(shoot);
         anim.SetBool("Fire", true);
         MuzzleFlash.SetActive(true);
         StartCoroutine(CS.Shake(0.25f, 1f));
@@ -301,8 +298,7 @@ public class Pistol : MonoBehaviour
         {
             firesec = false;
             isReloading = true;
-            //var r = Instantiate(Reload, this.gameObject.transform);
-            //Destroy(r, 3f);
+            AS.PlayOneShot(Reload);
             anim.SetBool("Reload", true);
             yield return new WaitForSeconds(reloadTime / 2f);
             currentAmmo = maxAmmo;

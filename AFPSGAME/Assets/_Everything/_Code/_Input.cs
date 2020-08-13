@@ -137,6 +137,22 @@ public class @_Input : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""b12ffe54-58b7-43fb-9434-5b20a73f1b0d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Next Weapon"",
+                    ""type"": ""Value"",
+                    ""id"": ""e9b633e5-8b54-4651-bf08-ff1ac4cedfff"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -304,6 +320,28 @@ public class @_Input : IInputActionCollection, IDisposable
                     ""action"": ""Grenade"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a9bf5ec-44f1-426e-bd31-c308f5b4d47d"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e073462c-aad0-44be-a395-2ac178046348"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Next Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -327,6 +365,8 @@ public class @_Input : IInputActionCollection, IDisposable
         m_Player_Shotgun = m_Player.FindAction("Shotgun", throwIfNotFound: true);
         m_Player_AssultRifle = m_Player.FindAction("Assult Rifle", throwIfNotFound: true);
         m_Player_Grenade = m_Player.FindAction("Grenade", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
+        m_Player_NextWeapon = m_Player.FindAction("Next Weapon", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -391,6 +431,8 @@ public class @_Input : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Shotgun;
     private readonly InputAction m_Player_AssultRifle;
     private readonly InputAction m_Player_Grenade;
+    private readonly InputAction m_Player_Pause;
+    private readonly InputAction m_Player_NextWeapon;
     public struct PlayerActions
     {
         private @_Input m_Wrapper;
@@ -410,6 +452,8 @@ public class @_Input : IInputActionCollection, IDisposable
         public InputAction @Shotgun => m_Wrapper.m_Player_Shotgun;
         public InputAction @AssultRifle => m_Wrapper.m_Player_AssultRifle;
         public InputAction @Grenade => m_Wrapper.m_Player_Grenade;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
+        public InputAction @NextWeapon => m_Wrapper.m_Player_NextWeapon;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -464,6 +508,12 @@ public class @_Input : IInputActionCollection, IDisposable
                 @Grenade.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrenade;
                 @Grenade.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrenade;
                 @Grenade.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrenade;
+                @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @NextWeapon.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNextWeapon;
+                @NextWeapon.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNextWeapon;
+                @NextWeapon.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNextWeapon;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -513,6 +563,12 @@ public class @_Input : IInputActionCollection, IDisposable
                 @Grenade.started += instance.OnGrenade;
                 @Grenade.performed += instance.OnGrenade;
                 @Grenade.canceled += instance.OnGrenade;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+                @NextWeapon.started += instance.OnNextWeapon;
+                @NextWeapon.performed += instance.OnNextWeapon;
+                @NextWeapon.canceled += instance.OnNextWeapon;
             }
         }
     }
@@ -534,5 +590,7 @@ public class @_Input : IInputActionCollection, IDisposable
         void OnShotgun(InputAction.CallbackContext context);
         void OnAssultRifle(InputAction.CallbackContext context);
         void OnGrenade(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnNextWeapon(InputAction.CallbackContext context);
     }
 }
