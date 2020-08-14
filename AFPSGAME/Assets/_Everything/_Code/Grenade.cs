@@ -10,6 +10,7 @@ public class Grenade : MonoBehaviour
 
     void Start()
     {
+        //explode after a small amount of time
         ntte = Time.time + ExplodeTime;
     }
 
@@ -20,7 +21,9 @@ public class Grenade : MonoBehaviour
         {
             ntte = Time.time + 2;
             var CS = GameObject.FindGameObjectWithTag("CS");
+            //spawn explosion particles
             var e = Instantiate(explosion, transform.position, explosion.transform.rotation);
+            //apply camera shake
             StartCoroutine(CS.GetComponent<CameraShake>().Shake(0.75f, 1.25f));
             Destroy(e, 1f);
             Destroy(this.gameObject, 1.5f);

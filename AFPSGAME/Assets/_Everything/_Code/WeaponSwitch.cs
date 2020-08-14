@@ -29,6 +29,7 @@ public class WeaponSwitch : MonoBehaviour
 
     IEnumerator ChangeWeapon(int weapon)
     {
+        //if the selected weapon and curretn weapon is not the same change weapon
         if(CurrentWeapon != weapon)
         {
             if (weapon > 2)
@@ -36,8 +37,10 @@ public class WeaponSwitch : MonoBehaviour
             else if (weapon < 0)
                 weapon = 2;
             CurrentWeapon = weapon;
+            //play weapon switch animations
             anim.SetBool("hide", true);
             yield return new WaitForSeconds(0.15f);
+            //disable current weapon and enable next weapon
             for (int i = 0; i < Weapons.Length; i++)
             {
                 if (i == CurrentWeapon)

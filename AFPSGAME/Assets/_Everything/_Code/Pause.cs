@@ -33,8 +33,11 @@ public class Pause : MonoBehaviour
         paused = !paused;
         if(paused)
         {
+            //if paused unlock the mouse cursor
             Cursor.lockState = CursorLockMode.None;
+            //pause time
             Time.timeScale = 0;
+            //disable all the hud and enable the pausse menu
             NormalUI.SetActive(false);
             PauseUI.SetActive(true);
             PM.enabled = false;
@@ -46,8 +49,11 @@ public class Pause : MonoBehaviour
         }
         else
         {
+            //if unpaused lock the mouse cursor
             Cursor.lockState = CursorLockMode.Locked;
+            //unpause time
             Time.timeScale = 1;
+            //reenable the hud
             NormalUI.SetActive(true);
             PauseUI.SetActive(false);
             PM.enabled = true;
@@ -61,14 +67,16 @@ public class Pause : MonoBehaviour
 
     public void mainMenu()
     {
+        //if player hits the Quit to main menu button, load main menu scene
         Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu");
     }
 
     public void quit()
     {
+        //if player hit the quit to destop button, quit the application
         Time.timeScale = 1;
-        Application.Quit();
+        Application.Quit(); //this doesnt work in editor only on build
     }
 
     //Enable and disable Input System

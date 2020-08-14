@@ -11,6 +11,7 @@ public class StartGame : MonoBehaviour
 
     private void Awake()
     {
+        //check if there is another main SoundTrack
         var mt = GameObject.FindGameObjectsWithTag("MainTrack");
         if(mt.Length > 1)
         {
@@ -21,10 +22,12 @@ public class StartGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if player hits space load the level
         if(Input.GetKeyDown(KeyCode.Space))
         {
             StartCoroutine(fade());
         }
+        //if player hit escape, wuit application
         if(Input.GetKey(KeyCode.Escape))
         {
             Application.Quit();
@@ -33,12 +36,13 @@ public class StartGame : MonoBehaviour
 
     IEnumerator fade()
     {
+        //dont destory soundtrack on load
         if(SoundTrack != null)
         {
             DontDestroyOnLoad(SoundTrack);
         }
         anim.SetBool("fade", true);
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(15f);
         SceneManager.LoadScene(lvl);
     }
 }

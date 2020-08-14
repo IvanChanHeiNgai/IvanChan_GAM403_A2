@@ -82,6 +82,7 @@ public class AssultRifle : MonoBehaviour
 
     void Awake()
     {
+        //input System
         input = new _Input();
 
         input.Player.Fire.performed += ctx => fire1 = true;
@@ -103,6 +104,7 @@ public class AssultRifle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //display amount of ammo for the ui
         AmmoUI.text = currentAmmo.ToString();
         MaxAmmoUI.text = ReservedAmmo.ToString();
         if (currentAmmo <= LowAmmoAmount)
@@ -115,20 +117,25 @@ public class AssultRifle : MonoBehaviour
         }
 
 
-
+        //make sure you don't go above the max ammo amount
         if (currentAmmo > maxAmmo)
         {
             currentAmmo = maxAmmo;
         }
 
+        //if player press the shoot key,
         if (fire1)
         {
-            //fire1 = false;
+            //and if thegun is allowed to shoot this frame, current ammo is not 0, not reloading and also not spriting, fire weapon
             if (nttf < Time.time && currentAmmo > 0 && !isReloading && !sprit)
             {
+                //set a delay before able to fire again
                 nttf = Time.time + (1 / fireRate);
+                //jump to a coroutine to fire a raycast out
                 StartCoroutine(fire());
+                //jump to coroutine to animate the gun fire
                 StartCoroutine(animateFire());
+                //if player is aimming down sights, apply the right amount of recoil to the camera
                 if (ads)
                 {
                     ML.Recoil(ADSVerticalRecoil, ADSHorizontalRecoil);
@@ -139,6 +146,8 @@ public class AssultRifle : MonoBehaviour
                 }
             }
         }
+
+        //if player is walking or idle, animate the crosshair properly
         if (PM.x == 0 && PM.z == 0)
         {
             walk = false;
@@ -167,32 +176,43 @@ public class AssultRifle : MonoBehaviour
                 sprit = false;
             }
         }
+
+        //if player pressed the ads key and is not reloading AND is not spritng, let the player Aim Down Sights
         if (firesec && !isReloading && !sprit)
         {
+            //animate the crosshair to ads
             anim.SetBool("ADS", true);
+            //animate the gun to ads
             AnimUI.SetBool("Ads", true);
+            //disable the weapon sway and camera rumble script script and reset the transform of the weapon
             WS.enabled = false;
             CR.enabled = false;
             CR.transform.localPosition = Vector3.zero;
             CR.transform.localRotation = Quaternion.Euler(Vector3.zero);
             WS.transform.localPosition = Vector3.zero;
             ads = true;
+            //change the fov of camera to zoom in
             MainCamera.fieldOfView = 35.98339f;
         }
         else
         {
             anim.SetBool("ADS", false);
             AnimUI.SetBool("Ads", false);
+            //renable the weapon sway and camera rumble script 
             WS.enabled = true;
             CR.enabled = true;
             ads = false;
+            //reset the camera fov
             MainCamera.fieldOfView = 58.71551f;
         }
 
+        //if weapon is not reloading and the ammo is empty AND we have some reserved ammo left AND we no spriting, reload
         if (!isReloading && currentAmmo <= 0 && ReservedAmmo != 0 && !sprit)
         {
+            //jump to a coroutine to reload
             StartCoroutine(reload());
         }
+        //if the player hit the reload button and current ammo is not equal to the max ammo AND we are not reloading AND we have some reserved ammo ANDDDDDD we are not spriting, then reload
         if (reloadpress && currentAmmo != maxAmmo && !isReloading && ReservedAmmo != 0 && !sprit)
         {
             reloadpress = false;
@@ -207,6 +227,15 @@ public class AssultRifle : MonoBehaviour
     IEnumerator fire()
     {
         RaycastHit hit;
+        /*
+        set the random spread for the bullets
+
+        if player is ads, we will use the ads bullet spread variable
+
+        if player is just standing or crouching, we will use the idle bullet spread variable
+
+        if player is walking, we will use the walking bullet spread variable
+        */
         var mV = 0f;
         var MV = 0f;
         var mH = 0f;
@@ -235,22 +264,30 @@ public class AssultRifle : MonoBehaviour
                 MH = WalkingMaximalHorizontalSpread / 100;
             }
         }
+
+        //after that we randomize the min and max value to get a vertical and horizontal position of the bullet
         var vertical = Random.Range(mV, MV);
         var horizontal = Random.Range(mH, MH);
+        //shoot recast and apply the bullet spread
         if (Physics.Raycast(MainCamera.transform.position, MainCamera.transform.forward + (MainCamera.transform.right * vertical) + (MainCamera.transform.up * horizontal), out hit, range))
         {
+            //if there is no rigidbody we will Instantiate a bullet decal onto the surface
             if (hit.rigidbody == null)
             {
                 GameObject hole = Instantiate(BulletHole, hit.point, Quaternion.LookRotation(hit.normal));
             }
+            //if we hit and enemy, do damage
             if((hit.collider.CompareTag("Enemy")))
             {
+                //get the enemy script from the parent of the collider
                 Enemy E_HP = hit.collider.GetComponentInParent<Enemy>();
                 if (E_HP != null)
                 {
+                    //spawn blood particles on the enemy and blood decals on them
                     GameObject b = Instantiate(blood, hit.point, blood.transform.rotation);
                     Destroy(b, 2f);
                     Instantiate(BloodDecal, hit.point, Quaternion.Euler(270, 0, 90), hit.collider.gameObject.transform);
+                    //if the collider we hit is the head do MORE DAMAGE!!!!!!!!!!
                     if (hit.collider.name == "mixamorig:Head")
                     {
                         E_HP.Health -= damage * 2;
@@ -263,6 +300,7 @@ public class AssultRifle : MonoBehaviour
             }
             else
             {
+                //if we didnt hit an enemy just spawn some smoke particles
                 GameObject impactGO = Instantiate(HitEffect, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(impactGO, 1f);
             }
@@ -276,35 +314,40 @@ public class AssultRifle : MonoBehaviour
 
     IEnumerator animateFire()
     {
+        //decrease ammo
         currentAmmo--;
+        //play sfx
         AS.PlayOneShot(shoot);
+        //animate gun to shoot and enable muzzle flash
         anim.SetBool("Fire", true);
         MuzzleFlash.SetActive(true);
+        //apply camera shake
         StartCoroutine(CS.Shake(0.0625f, 0.25f));
         yield return new WaitForSeconds(0.166f);
+        //Spawn bullet caseing
         Rigidbody bu = (Rigidbody)Instantiate(Bullets, BulletOutput.transform.position, BulletOutput.transform.rotation);
         bu.velocity = BulletOutput.transform.TransformDirection(-Vector3.forward * Random.Range(0.5f, 1f));
         Destroy(bu, 4f);
+        //disable muzzle falsh
         MuzzleFlash.SetActive(false);
         anim.SetBool("Fire", false);
-        int c = 0;
     }
 
     IEnumerator reload()
     {
-        if (ReservedAmmo >= maxAmmo)
-        {
-            firesec = false;
-            isReloading = true;
-            AS.PlayOneShot(Reload);
-            anim.SetBool("Reload", true);
-            yield return new WaitForSeconds(reloadTime / 2f);
-            currentAmmo = maxAmmo;
-            ReservedAmmo -= maxAmmo;
-            yield return new WaitForSeconds(reloadTime / 2f);
-            anim.SetBool("Reload", false);
-            isReloading = false;
-        }
+        firesec = false;
+        isReloading = true;
+        //play reload sfx and animations
+        AS.PlayOneShot(Reload);
+        anim.SetBool("Reload", true);
+        yield return new WaitForSeconds(reloadTime / 2f);
+        //set current ammo to max ammo
+        currentAmmo = maxAmmo;
+        //deccrease reserved ammo
+        ReservedAmmo -= maxAmmo;
+        yield return new WaitForSeconds(reloadTime / 2f);
+        anim.SetBool("Reload", false);
+        isReloading = false;
     }
 
     void OnDisable()

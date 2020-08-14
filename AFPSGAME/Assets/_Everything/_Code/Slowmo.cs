@@ -28,6 +28,7 @@ public class Slowmo : MonoBehaviour
 
     void Update()
     {
+        //Display slowmo meter ui
         MeterUI.fillAmount = (float)SlowDownMeter / 100;
         if(sm && nttsm <= Time.time && SlowDownMeter > 0)
         {

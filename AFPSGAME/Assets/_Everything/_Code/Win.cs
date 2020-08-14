@@ -9,6 +9,7 @@ public class Win : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        //when player enters the trigger volume, enable text "Mission Complete" and load to main menu
         if(other.CompareTag("Player"))
         {
             MissionComplete.SetActive(true);

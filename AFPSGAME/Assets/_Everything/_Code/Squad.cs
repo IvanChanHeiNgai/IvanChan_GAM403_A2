@@ -12,6 +12,7 @@ public class Squad : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if a single enemy get's hit then all enemy in a squad will go into a attack mode
         if(!alloutattack)
         {
             for (int i = 0; i < enemy.Length; i++)
@@ -37,6 +38,7 @@ public class Squad : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //if player enters a trigger volume then all enemy goes into an attack mode
         if (other.CompareTag("Player"))
         {
             attaqck();
